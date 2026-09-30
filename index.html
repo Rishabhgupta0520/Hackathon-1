@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LETTERS &amp; SNACKS - MAX RAGE EDITION</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            font-family: "Courier New", monospace;
+            color: #2a1a00;
+            background: #e8dcc0 repeating-linear-gradient(0deg, transparent 0 30px, rgba(0, 0, 0, .05) 30px 31px);
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        .sr {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+        }
+
+        .goal {
+            max-width: 400px;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .goal b {
+            font-size: 15px;
+        }
+
+        #machine {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px;
+            background: linear-gradient(#c62828, #8e0000);
+            border: 6px solid #4a0000;
+            border-radius: 14px;
+            box-shadow: 0 12px 0 #3a0000;
+        }
+
+        #machine.shake {
+            animation: shake .4s;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-6px);
+            }
+
+            40% {
+                transform: translateX(6px);
+            }
+
+            60% {
+                transform: translateX(-4px);
+            }
+
+            80% {
+                transform: translateX(4px);
+            }
+        }
+
+        /* ---- the cursed logo ---- */
+        .logoWrap {
+            background: #fff3c4;
+            border: 3px solid #4a0000;
+            padding: 8px 8px 6px;
+            overflow: hidden;
+        }
+
+        #logo {
+            display: block;
+            width: 100%;
+            height: auto;
+            cursor: pointer;
+            animation: almost 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes almost {
+            from {
+                transform: rotate(-1.7deg) translateX(-3px);
+            }
+
+            to {
+                transform: rotate(-0.5deg) translateX(3px);
+            }
+        }
+
+        .tag {
+            margin-top: 4px;
+            text-align: right;
+            font: italic 700 17px "Papyrus", "Brush Script MT", fantasy;
+            color: #00c8a0;
+            text-shadow: 1px 1px #ff2d95;
+        }
+
+        .tag2 {
+            text-align: left;
+            font: 8px "Times New Roman", serif;
+            color: #b9a56a;
+        }
+
+        .ld {
+            position: relative;
+            height: 12px;
+            margin-top: 4px;
+            background: #ddd;
+            border: 1px solid #999;
+        }
+
+        .ld i {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 99%;
+            background: repeating-linear-gradient(90deg, #ff2d95 0 8px, #ffee00 8px 16px);
+        }
+
+        .ld span {
+            position: absolute;
+            right: 3px;
+            top: -1px;
+            font: 9px Arial, sans-serif;
+            color: #000;
+        }
+
+        #window {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 4px;
+            margin: 10px 0;
+            padding: 8px;
+            background: #1b1b2f;
+            border: 4px solid #111;
+        }
+
+        .slot {
+            position: relative;
+            height: 62px;
+            text-align: center;
+            color: #fff;
+            background: #2b2b44 repeating-linear-gradient(90deg, transparent 0 6px, rgba(255, 255, 255, .06) 6px 7px);
+            border-bottom: 3px solid #8a8aa8;
+        }
+
+        .slot .cd {
+            position: absolute;
+            left: 2px;
+            top: 1px;
+            font-size: 8px;
+            color: #8fc1ff;
+        }
+
+        .slot .it {
+            display: block;
+            padding-top: 12px;
+            font: 900 24px/1.2 "Courier New", monospace;
+        }
+
+        .slot .pr {
+            position: absolute;
+            left: 0;
+            bottom: 1px;
+            width: 100%;
+            font-size: 8px;
+            color: #ffd24d;
+        }
+
+        .slot.spin .it {
+            animation: rot .3s linear 3;
+        }
+
+        @keyframes rot {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .slot.stuck {
+            transform: rotate(-5deg);
+        }
+
+        .slot.dropanim .it {
+            animation: fall .7s ease-in;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            60% {
+                transform: translateY(46px);
+                opacity: 0;
+            }
+
+            61% {
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .panel {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+
+        #lcd {
+            height: 30px;
+            overflow: hidden;
+            background: #9bb89b;
+            border: 3px inset #556;
+            color: #0d1f0d;
+        }
+
+        #lcdText {
+            display: inline-block;
+            white-space: nowrap;
+            padding: 3px 0;
+            font: 700 18px "Courier New", monospace;
+        }
+
+        #lcdText.run {
+            animation: lcdRun 7s linear infinite;
+        }
+
+        @keyframes lcdRun {
+            from {
+                transform: translateX(400px);
+            }
+
+            to {
+                transform: translateX(-100%);
+            }
+        }
+
+        #keys {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 5px;
+        }
+
+        #keys .wide {
+            grid-column: span 3;
+        }
+
+        button {
+            font: 900 15px "Courier New", monospace;
+            padding: 8px 4px;
+            cursor: pointer;
+            background: linear-gradient(#e3e3e3, #9a9a9a);
+            color: #222;
+            border: 3px outset #ccc;
+            border-radius: 4px;
+        }
+
+        button:active {
+            border-style: inset;
+        }
+
+        button:disabled {
+            opacity: .45;
+            cursor: not-allowed;
+        }
+
+        button:focus-visible,
+        input:focus-visible {
+            outline: 4px solid #ffd24d;
+            outline-offset: 2px;
+        }
+
+        .row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .row button {
+            flex: 1;
+        }
+
+        #coin {
+            background: radial-gradient(circle at 35% 35%, #fff, #b8b8b8 60%, #777);
+            border-radius: 30px;
+        }
+
+        .trayLabel {
+            margin: 10px 0 2px;
+            font-size: 10px;
+            color: #ffe;
+            text-align: center;
+        }
+
+        #tray {
+            min-height: 54px;
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            align-items: center;
+            padding: 6px;
+            background: #120a0a;
+            border: 4px inset #300;
+        }
+
+        #tray button {
+            width: 44px;
+            height: 44px;
+            font-size: 22px;
+            padding: 0;
+            border-radius: 50%;
+        }
+
+        #tray:empty::before {
+            content: "(empty)";
+            color: #755;
+            font-size: 11px;
+        }
+
+        #mine {
+            width: 100%;
+            max-width: 400px;
+            background: #fffbe8;
+            border: 3px solid #4a0000;
+            padding: 10px;
+            text-align: center;
+        }
+
+        #nameOut {
+            font: 900 32px "Courier New", monospace;
+            letter-spacing: 6px;
+        }
+
+        #mine button {
+            margin: 4px 2px 0;
+            padding: 8px 12px;
+        }
+
+        #receipt {
+            width: 100%;
+            max-width: 320px;
+            background: #fff;
+            color: #222;
+            padding: 14px 14px 26px;
+            box-shadow: 0 6px 0 rgba(0, 0, 0, .2);
+            clip-path: polygon(0 0, 100% 0, 100% 96%, 95% 100%, 90% 96%, 85% 100%, 80% 96%, 75% 100%, 70% 96%, 65% 100%, 60% 96%, 55% 100%, 50% 96%, 45% 100%, 40% 96%, 35% 100%, 30% 96%, 25% 100%, 20% 96%, 15% 100%, 10% 96%, 5% 100%, 0 96%);
+            animation: print .8s ease-out;
+        }
+
+        @keyframes print {
+            from {
+                transform: translateY(-30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: none;
+                opacity: 1;
+            }
+        }
+
+        #receipt pre {
+            margin: 0 0 8px;
+            font: 12px/1.35 "Courier New", monospace;
+            white-space: pre-wrap;
+        }
+
+        /* ---- popups: cookie, newsletter, rating ---- */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            background: rgba(0, 0, 0, .7);
+        }
+
+        .overlay .box {
+            width: 100%;
+            max-width: 360px;
+            padding: 16px;
+            text-align: center;
+            background: #fff;
+            color: #111;
+            border: 6px ridge #f0f;
+            font-family: "Comic Sans MS", "Chalkboard SE", cursive;
+        }
+
+        .overlay h2 {
+            margin: 0 0 8px;
+            font: 900 24px "Arial Black", sans-serif;
+            color: #d00;
+        }
+
+        .overlay .s {
+            font-size: 11px;
+            margin: 4px 0;
+        }
+
+        .overlay .giant {
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            padding: 14px;
+            font: 900 26px "Impact", sans-serif;
+            color: #fff;
+            background: #e11;
+            border: 4px ridge #fa0;
+        }
+
+        .overlay .micro {
+            margin-top: 10px;
+            padding: 1px 3px;
+            font: 7px "Comic Sans MS", cursive;
+            color: #aaa;
+            background: transparent;
+            border: 0;
+            text-decoration: underline;
+        }
+
+        .overlay input[type="text"] {
+            width: 100%;
+            padding: 6px;
+            margin-top: 6px;
+            font: 12px "Courier New", monospace;
+        }
+
+        .tog {
+            display: block;
+            margin: 2px 0;
+            padding: 2px 4px;
+            text-align: left;
+            font: 700 11px "Courier New", monospace;
+            color: #000;
+            background: #ffee00;
+        }
+
+        #stars button {
+            padding: 0 4px;
+            font-size: 36px;
+            color: #ccc;
+            background: none;
+            border: 0;
+        }
+
+        #stars button.on {
+            color: #fa0;
+        }
+
+        /* ---- pop-up ads ---- */
+        .ad {
+            position: fixed;
+            z-index: 30;
+            width: 210px;
+            padding: 22px 10px 10px;
+            background: #fff;
+            color: #f00;
+            border: 5px ridge #00f;
+            text-align: center;
+            font: 900 15px "Arial Black", sans-serif;
+            box-shadow: 6px 6px 0 #000;
+        }
+
+        .ad .xreal {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            padding: 0;
+            margin: 0;
+            font: 8px Arial, sans-serif;
+            line-height: 8px;
+            color: #ddd;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 0;
+        }
+
+        .ad .fake {
+            display: block;
+            width: 100%;
+            margin: 8px 0 0;
+            font-size: 20px;
+            color: #fff;
+            background: #0a0;
+        }
+
+        /* ---- chatbot ---- */
+        #chatBtn {
+            position: fixed;
+            left: 12px;
+            bottom: 12px;
+            z-index: 40;
+            width: 54px;
+            height: 54px;
+            padding: 0;
+            font-size: 26px;
+            border-radius: 50%;
+        }
+
+        #chat {
+            position: fixed;
+            left: 12px;
+            bottom: 76px;
+            z-index: 40;
+            width: 250px;
+            background: #fff;
+            color: #111;
+            border: 3px solid #333;
+            font: 12px "Arial", sans-serif;
+        }
+
+        #chat .ch {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 8px;
+            background: #333;
+            color: #fff;
+        }
+
+        #chat .ch button {
+            padding: 0 6px;
+            font-size: 12px;
+        }
+
+        #chatLog {
+            height: 120px;
+            overflow: auto;
+            padding: 6px;
+        }
+
+        #chatLog p {
+            margin: 0 0 6px;
+        }
+
+        #chatIn {
+            width: 100%;
+            padding: 6px;
+            border: 0;
+            border-top: 2px solid #333;
+        }
+
+        #toast {
+            position: fixed;
+            left: 50%;
+            bottom: 14px;
+            transform: translate(-50%, 150%);
+            max-width: 92vw;
+            padding: 10px 16px;
+            background: #000;
+            color: #9f9;
+            font: 700 14px "Courier New", monospace;
+            border: 2px solid #9f9;
+            transition: transform .3s cubic-bezier(.2, 1.4, .4, 1);
+            z-index: 90;
+        }
+
+        #toast.on {
+            transform: translate(-50%, 0);
+        }
+
+        /* ---- wandering fake cursor (real one hidden). Esc = mercy ---- */
+        #fakeCursor {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 26px;
+            height: 26px;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+            * {
+                cursor: none !important;
+            }
+
+            body.mercy * {
+                cursor: auto !important;
+            }
+
+            body:not(.mercy) #fakeCursor {
+                display: block;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #lcdText.run {
+                animation: none;
+            }
+
+            #machine.shake,
+            .slot.spin .it,
+            .slot.dropanim .it,
+            #receipt {
+                animation: none;
+            }
+
+            #logo {
+                animation: none;
+                transform: rotate(-1deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <p class="goal"><b>Goal:</b> type your name (3 to 6 letters).<br>
+        The keyboard is broken, so we replaced it with a vending machine.</p>
+
+    <div id="machine">
+        <div class="logoWrap">
+            <svg id="logo" viewBox="0 0 360 100" role="img" aria-label="Letters and Snacks logo">
+                <defs>
+                    <linearGradient id="wordart" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0" stop-color="#ffee00" />
+                        <stop offset="1" stop-color="#ff7a00" />
+                    </linearGradient>
+                    <linearGradient id="wordart2" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0" stop-color="#00e5ff" />
+                        <stop offset="1" stop-color="#b6ff00" />
+                    </linearGradient>
+                    <filter id="post">
+                        <feComponentTransfer>
+                            <feFuncR type="discrete" tableValues="0 .33 .66 1" />
+                            <feFuncG type="discrete" tableValues="0 .33 .66 1" />
+                            <feFuncB type="discrete" tableValues="0 .33 .66 1" />
+                        </feComponentTransfer>
+                    </filter>
+                </defs>
+                <g filter="url(#post)">
+                    <rect x="10" y="10" width="342" height="82" fill="#ff2d95" />
+                    <rect x="4" y="4" width="342" height="82" fill="none" stroke="#00e5ff" stroke-width="4" />
+                    <g font-family="'Comic Sans MS','Chalkboard SE',cursive" font-weight="700" font-size="40">
+                        <text x="27" y="53" dx="0 3 -2 5 -3 1 -4" dy="0 -2 3 0 -3 2 1" rotate="0 0 0 9 0 -7 0"
+                            fill="#4b00b8">LETTERS</text>
+                        <text x="24" y="49" dx="0 3 -2 5 -3 1 -4" dy="0 -2 3 0 -3 2 1" rotate="0 0 0 9 0 -7 0"
+                            fill="url(#wordart)" stroke="#000" stroke-width="1.5" paint-order="stroke">LETTERS</text>
+                    </g>
+                    <text x="205" y="64" font-size="13" fill="#999" font-family="'Times New Roman',serif"
+                        font-style="italic">&amp;</text>
+                    <text x="98" y="88" font-size="34" font-family="Impact,'Arial Black',sans-serif"
+                        fill="url(#wordart2)" stroke="#4b00b8" stroke-width="1.2" paint-order="stroke">SN<tspan
+                            rotate="180" dx="21" dy="-24">A</tspan>
+                        <tspan dy="24">CKS</tspan>
+                    </text>
+                    <text x="150" y="26" font-size="16">✨</text>
+                    <text x="316" y="24" font-size="10" fill="#fff" font-family="Arial,sans-serif">™®©</text>
+                </g>
+            </svg>
+            <div class="tag">Your favourite keyboard*</div>
+            <div class="tag2">*not a keyboard. Since 1987 (est. 2024).</div>
+            <div class="ld"><i></i><span>loading brand… 99%</span></div>
+        </div>
+
+        <div id="window" aria-label="Vending machine shelves"></div>
+
+        <div class="panel">
+            <div id="lcd" aria-hidden="true"><span id="lcdText"></span></div>
+            <div id="lcdSr" class="sr" role="status" aria-live="polite"></div>
+            <div id="keys"></div>
+            <div class="row">
+                <button id="coin" type="button">INSERT COIN</button>
+                <button id="shake" type="button">SHAKE MACHINE</button>
+            </div>
+        </div>
+
+        <div class="trayLabel">PICK UP HERE</div>
+        <div id="tray"></div>
+    </div>
+
+    <div id="mine">
+        <div>Your name so far:</div>
+        <div id="nameOut">_ _ _</div>
+        <button id="undo" type="button">DESTROY LAST LETTER</button>
+        <button id="checkout" type="button" disabled>CHECKOUT</button>
+    </div>
+
+    <div id="receipt" hidden>
+        <pre id="receiptText"></pre>
+        <button id="survey" type="button">TAKE SURVEY</button>
+        <button id="again" type="button">ORDER AGAIN</button>
+    </div>
+
+    <!-- Cookie banner (opens first) -->
+    <div class="overlay" id="cookie">
+        <div class="box">
+            <h2>🍪 We value your privacy</h2>
+            <p class="s">We and our 1,847 partners use cookies to remember that you were here.</p>
+            <div id="ckList"></div>
+            <button class="giant" id="ckBig" type="button">ACCEPT ALL (recommended!!!)</button>
+            <button class="micro" id="ckTiny" type="button">manage preferences</button>
+        </div>
+    </div>
+
+    <!-- Newsletter popup (after your first purchase) -->
+    <div class="overlay" id="news" hidden>
+        <div class="box">
+            <h2>WAIT! 10% OFF 🎁</h2>
+            <p class="s">Join the 12 people who receive our newsletter (daily, 4 times).</p>
+            <input type="text" placeholder="email (we already have it)" aria-label="Email">
+            <button class="giant" id="newsYes" type="button">SUBSCRIBE &amp; SAVE</button>
+            <button class="micro" id="newsNo" type="button">No thanks, I enjoy paying full price</button>
+        </div>
+    </div>
+
+    <!-- Rating popup (after your third purchase) -->
+    <div class="overlay" id="rate" hidden>
+        <div class="box">
+            <h2>How was your experience?</h2>
+            <div id="stars"></div>
+            <p class="s" id="rateMsg">Your honest feedback is very important to us.</p>
+        </div>
+    </div>
+
+    <!-- Chatbot -->
+    <button id="chatBtn" type="button" aria-label="Chat with Snacky">💬</button>
+    <div id="chat" hidden>
+        <div class="ch"><span>Snacky (online)</span><button id="chatX" type="button" aria-label="Close chat">x</button>
+        </div>
+        <div id="chatLog"></div>
+        <input id="chatIn" type="text" placeholder="Type a message…" aria-label="Message to Snacky">
+    </div>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+    <svg id="fakeCursor" viewBox="0 0 26 26" aria-hidden="true">
+        <path d="M2 2 L2 22 L8 17 L12 25 L16 23 L12 15 L20 15 Z" fill="#fff" stroke="#000" stroke-width="2" />
+    </svg>
+
+    <script>
+        const $ = s => document.querySelector(s);
+        const rand = (a, b) => Math.random() * (b - a) + a;
+        const pick = a => a[Math.floor(Math.random() * a.length)];
+        const fmt = c => '$' + (c / 100).toFixed(2);
+
+        function toast(msg) {
+            const t = $('#toast');
+            t.textContent = msg;
+            t.classList.add('on');
+            clearTimeout(toast.h);
+            toast.h = setTimeout(() => t.classList.remove('on'), 2800);
+        }
+        function openOverlay(id) {
+            $('#' + id).hidden = false;
+            const b = $('#' + id + ' button');
+            if (b) b.focus();
+        }
+        function closeOverlay(id) { $('#' + id).hidden = true; }
+
+        /* ---------- State ---------- */
+        let credit = 0, coinTries = 0, sel = '', locked = false, stuck = null, keyBusy = false;
+        let tray = [], uid = 0, msg = '', spent = 0, purchases = 0, snacksEaten = 0;
+        let done = false, mercy = false, checkoutTries = 0, rateBusy = false;
+
+        /* ---------- Build the machine ---------- */
+        const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+        const SNACKS = ['🍫', '🥨', '🍬', '🧃', '🍪', '🥜', '🍿', '🥤', '🍘', '🧂'];
+        const items = [
+            ...LETTERS.map(l => ({ item: l, type: 'letter', price: pick([25, 50, 75]) })),
+            ...SNACKS.map(s => ({ item: s, type: 'snack', price: 100 }))
+        ].sort(() => Math.random() - 0.5);
+        const ROWS = 'ABCDEF';
+        const slots = items.map((it, i) => ({ ...it, code: ROWS[Math.floor(i / 6)] + (i % 6 + 1) }));
+
+        slots.forEach(s => {
+            const d = document.createElement('div');
+            d.className = 'slot';
+            d.innerHTML = '<span class="cd">' + s.code + '</span><span class="it">' + s.item + '</span><span class="pr">' + fmt(s.price) + '</span>';
+            s.el = d;
+            s.pr = d.querySelector('.pr');
+            $('#window').appendChild(d);
+        });
+
+        /* ---------- LCD (scrolls, on purpose) ---------- */
+        function say(text) {
+            const l = $('#lcdText');
+            l.textContent = text;
+            l.classList.remove('run');
+            void l.offsetWidth;
+            l.classList.add('run');
+            $('#lcdSr').textContent = text;
+        }
+        say('INSERT COIN * SELECT ITEM * EXACT CHANGE ONLY *');
+
+        /* ---------- Cookie banner ---------- */
+        ['Essential cookies', 'Non-essential essential cookies', 'Cookies that watch you sleep',
+            "Cookies for cookies' sake", 'Marketing your marketing', 'Selling your future',
+            'Analytics of your analytics', 'Goose data'].forEach(n => {
+                const l = document.createElement('label');
+                l.className = 'tog';
+                l.innerHTML = '<input type="checkbox" checked disabled> ' + n;
+                $('#ckList').appendChild(l);
+            });
+        $('#ckBig').onclick = () => closeOverlay('cookie');
+        $('#ckTiny').onclick = () => { toast('Preferences saved: everything.'); closeOverlay('cookie'); };
+
+        /* ---------- Keypad (laggy, and sometimes misreads a digit) ---------- */
+        function press(ch) {
+            if (locked) { say('BUSY. PLEASE STAND STILL.'); return; }
+            if (keyBusy) return;                       /* mechanical lag: presses during the delay are lost */
+            keyBusy = true;
+            setTimeout(() => { keyBusy = false; }, mercy ? 0 : 350);
+            if (ROWS.includes(ch)) { sel = ch; say('SELECTED ' + sel); return; }
+            if (sel.length === 0) { say('ERR: PRESS A LETTER FIRST'); return; }
+            if (sel.length === 2) { say('CODE FULL. PRESS ENTER OR CANCEL.'); return; }
+            let misread = false;
+            if (!mercy && Math.random() < 0.1) {
+                ch = String(Math.min(6, Math.max(1, +ch + pick([-1, 1]))));
+                misread = true;
+            }
+            sel += ch;
+            say('SELECTED ' + sel + (misread ? ' (KEY MISREAD)' : ''));
+        }
+        function addKey(c) {
+            const b = document.createElement('button');
+            b.type = 'button'; b.textContent = c;
+            b.onclick = () => press(c);
+            $('#keys').appendChild(b);
+        }
+        ROWS.split('').forEach(addKey);
+        '123456'.split('').forEach(addKey);
+        const enter = document.createElement('button');
+        enter.type = 'button'; enter.className = 'wide'; enter.textContent = 'ENTER';
+        enter.onclick = () => vend();
+        const cancel = document.createElement('button');
+        cancel.type = 'button'; cancel.className = 'wide'; cancel.textContent = 'CANCEL';
+        cancel.onclick = () => { sel = ''; say('CANCELLED. NO REFUNDS.'); };
+        $('#keys').appendChild(enter);
+        $('#keys').appendChild(cancel);
+
+        /* ---------- Coin slot (rejects the first 3, then 30% of the time) ---------- */
+        const rejects = ['COIN REJECTED', 'COIN TOO SHINY', 'COIN LOOKS TIRED', 'COIN IS FROM THE FUTURE', 'COIN FEELS HEAVY'];
+        $('#coin').onclick = () => {
+            if (locked) { say('BUSY. PLEASE STAND STILL.'); return; }
+            coinTries++;
+            if (!mercy && coinTries <= 3) { say(rejects[coinTries - 1]); return; }
+            if (!mercy && Math.random() < 0.3) { say(pick(rejects)); return; }
+            if (credit >= 500) { say('CREDIT FULL. SPEND IT.'); return; }
+            credit += 25;
+            say('CREDIT ' + fmt(credit));
+        };
+
+        /* ---------- Vending (with a surprise service fee) ---------- */
+        function vend() {
+            if (locked) { say('BUSY. PLEASE STAND STILL.'); return; }
+            if (stuck) { say('ITEM IS STUCK. SHAKE THE MACHINE.'); return; }
+            if (sel.length < 2) { say('INCOMPLETE CODE'); return; }
+            const slot = slots.find(s => s.code === sel);
+            if (!slot) { say('INVALID CODE'); return; }
+            if (tray.length >= 3) { say('TRAY FULL. TAKE YOUR ITEMS.'); return; }
+            const fee = (!mercy && Math.random() < 0.2) ? 25 : 0;
+            const total = slot.price + fee;
+            if (credit < total) {
+                say(fee ? 'SERVICE FEE ' + fmt(fee) + ' APPLIED. INSERT ' + fmt(total - credit) + ' MORE.'
+                    : 'INSERT ' + fmt(total - credit) + ' MORE');
+                return;
+            }
+            credit -= total;
+            spent += total;
+            purchases++;
+            sel = '';
+            if (fee) toast('Service fee of $0.25 applied. Thank you!');
+            if (purchases === 1) setTimeout(() => { if (!mercy) openOverlay('news'); }, 3000);
+            if (purchases === 3) setTimeout(() => { if (!mercy) openOverlay('rate'); }, 3000);
+            dispense(slot);
+        }
+        function dispense(slot) {
+            locked = true;
+            slot.el.classList.add('spin');
+            say('VENDING...');
+            const r = Math.random();
+            setTimeout(() => {
+                slot.el.classList.remove('spin');
+                if (!mercy && r < 0.3) {
+                    stuck = { slot, needed: 1 + Math.floor(Math.random() * 3) };
+                    slot.el.classList.add('stuck');
+                    locked = false;
+                    say('ITEM STUCK. SHAKE MACHINE ' + stuck.needed + ' TIMES.');
+                } else {
+                    drop(slot, r > 0.88 ? 2 : 1);
+                }
+            }, 900);
+        }
+        function drop(slot, n) {
+            locked = false;
+            slot.el.classList.add('dropanim');
+            setTimeout(() => slot.el.classList.remove('dropanim'), 750);
+            for (let i = 0; i < n; i++) tray.push({ item: slot.item, type: slot.type, id: ++uid });
+            renderTray();
+            say(n === 2 ? 'BONUS! TWO DROPPED.' : 'ENJOY YOUR ' + (slot.type === 'letter' ? 'LETTER' : 'SNACK') + '.');
+        }
+
+        /* ---------- Shake ---------- */
+        $('#shake').onclick = () => {
+            const m = $('#machine');
+            m.classList.add('shake');
+            setTimeout(() => m.classList.remove('shake'), 400);
+            if (locked) { say('ALARM ACTIVE. STAND STILL.'); return; }
+            if (!stuck) { say('PLEASE DO NOT SHAKE THE MACHINE.'); return; }
+            if (!mercy && Math.random() < 0.2) {
+                locked = true;
+                say('TILT! ALARM ACTIVE. STAND STILL.');
+                setTimeout(() => { locked = false; say('THE MACHINE FORGIVES YOU.'); }, 3000);
+                return;
+            }
+            stuck.needed--;
+            if (stuck.needed > 0) { say('ALMOST... ' + stuck.needed + ' MORE.'); return; }
+            const s = stuck.slot;
+            s.el.classList.remove('stuck');
+            stuck = null;
+            drop(s, 1);
+        };
+
+        /* ---------- Tray and name ---------- */
+        function renderTray() {
+            const t = $('#tray');
+            t.innerHTML = '';
+            tray.forEach(o => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.textContent = o.item;
+                b.setAttribute('aria-label', 'Take ' + o.item);
+                b.onclick = () => {
+                    if (o.type === 'letter' && msg.length >= 6) { toast('Six letters max. Toss one first.'); return; }
+                    tray = tray.filter(x => x.id !== o.id);
+                    renderTray();
+                    if (o.type === 'letter') { msg += o.item; renderName(); }
+                    else { snacksEaten++; toast('You ate it. It was stale.'); }
+                };
+                t.appendChild(b);
+            });
+        }
+        function renderName() {
+            $('#nameOut').textContent = msg ? msg.split('').join(' ') : '_ _ _';
+            $('#checkout').disabled = msg.length < 3;
+        }
+        $('#undo').onclick = () => {
+            if (!msg) { toast('Nothing to destroy.'); return; }
+            msg = msg.slice(0, -1);
+            renderName();
+            toast('Letter destroyed. It cost you money.');
+        };
+
+        /* ---------- Dynamic pricing ---------- */
+        setInterval(() => {
+            if (done || mercy) return;
+            for (let k = 0; k < 6; k++) {
+                const s = pick(slots);
+                s.price = Math.min(150, Math.max(25, s.price + pick([-25, 25, 50])));
+                s.pr.textContent = fmt(s.price);
+            }
+            say('PRICES UPDATED FOR YOUR CONVENIENCE.');
+        }, 12000);
+
+        /* ---------- Newsletter and rating popups ---------- */
+        $('#newsYes').onclick = () => { toast('Subscribed. Unsubscribing is not supported.'); closeOverlay('news'); };
+        $('#newsNo').onclick = () => closeOverlay('news');
+
+        for (let i = 1; i <= 5; i++) {
+            const b = document.createElement('button');
+            b.type = 'button'; b.textContent = '★';
+            b.setAttribute('aria-label', i + ' stars');
+            b.onclick = () => {
+                if (rateBusy) return;
+                rateBusy = true;
+                if (i < 5) $('#rateMsg').textContent = 'We only accept 5 stars. Adjusting your rating…';
+                document.querySelectorAll('#stars button').forEach(x => x.classList.add('on'));
+                setTimeout(() => {
+                    closeOverlay('rate');
+                    toast('Thank you for your honest feedback: 5 stars.');
+                }, 1300);
+            };
+            $('#stars').appendChild(b);
+        }
+
+        /* ---------- Chatbot that cannot help ---------- */
+        const chatLines = [
+            'I understand you want help. Have you tried buying a letter?',
+            'Please hold. You are number 4,187 in the chat queue.',
+            'I have escalated your issue to a vending machine.',
+            'Great question! Unfortunately I am a snack.',
+            'Have you tried turning the machine off and on? It is bolted to the floor.'
+        ];
+        let chatN = 0;
+        function botSay(t) {
+            const p = document.createElement('p');
+            p.textContent = 'Snacky: ' + t;
+            $('#chatLog').appendChild(p);
+            $('#chatLog').scrollTop = $('#chatLog').scrollHeight;
+        }
+        $('#chatBtn').onclick = () => {
+            const c = $('#chat');
+            c.hidden = !c.hidden;
+            if (!c.hidden) {
+                if (!$('#chatLog').children.length) botSay('Hi! I am Snacky. How can I not help you today?');
+                $('#chatIn').focus();
+            }
+        };
+        $('#chatX').onclick = () => { $('#chat').hidden = true; };
+        $('#chatIn').addEventListener('keydown', e => {
+            if (e.key !== 'Enter' || !e.target.value.trim()) return;
+            const p = document.createElement('p');
+            p.textContent = 'You: ' + e.target.value;
+            $('#chatLog').appendChild(p);
+            e.target.value = '';
+            setTimeout(() => botSay(chatLines[chatN++ % chatLines.length]), 1500);
+        });
+
+        /* ---------- Checkout: the first attempt "loses connection" ---------- */
+        $('#checkout').onclick = () => {
+            if (!mercy && checkoutTries === 0) {
+                checkoutTries++;
+                $('#checkout').disabled = true;
+                $('#checkout').textContent = 'PROCESSING...';
+                say('PROCESSING YOUR ORDER... DO NOT REFRESH THE PAGE.');
+                setTimeout(() => {
+                    const rewind = Math.min(2, msg.length);
+                    msg = msg.slice(0, msg.length - rewind);
+                    $('#checkout').textContent = 'CHECKOUT';
+                    renderName();
+                    say('ERROR 504. CONNECTION LOST.');
+                    toast('Error 504: your name was rewound by ' + rewind + ' letters. We are sorry (we are not).');
+                }, 3500);
+                return;
+            }
+            finishOrder();
+        };
+        function finishOrder() {
+            done = true;
+            const tip = Math.round(spent * 0.4);
+            $('#receiptText').textContent =
+                '   ** LETTERS & SNACKS **\n' +
+                '   ----------------------\n' +
+                'Customer:      ' + msg + '\n' +
+                'Purchases:     ' + purchases + '\n' +
+                'Letters kept:  ' + msg.length + '\n' +
+                'Snacks eaten:  ' + snacksEaten + '\n' +
+                'Total spent:   ' + fmt(spent) + '\n' +
+                'Tip suggested: 40% (' + fmt(tip) + ')\n' +
+                '   ----------------------\n' +
+                'ORDER STATUS:  CANCELLED\n' +
+                'Thank you, ' + msg.toLowerCase() + '!\n' +
+                'Please take our 47-question\nsurvey.\n';
+            $('#receipt').hidden = false;
+            $('#checkout').disabled = true;
+            $('#receipt').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        $('#survey').onclick = () => toast('Survey declined on your behalf.');
+        $('#again').onclick = () => location.reload();
+
+        /* ---------- Pop-up ads (the tiny grey x is the only real close) ---------- */
+        const adTexts = [
+            '🔥 HOT SINGLES IN YOUR SUBNET 🔥',
+            'YOU ARE THE 1,000,000th VISITOR!!!',
+            'Doctors HATE this one weird keyboard',
+            'Your PC has 3,847 viruses. Scan now.',
+            'Download more RAM (free)'
+        ];
+        let adsMade = 0;
+        function spawnAd() {
+            if (adsMade >= 10 || done) return;
+            adsMade++;
+            const ad = document.createElement('div');
+            ad.className = 'ad';
+            ad.style.left = rand(2, 55) + 'vw';
+            ad.style.top = rand(8, 60) + 'vh';
+            ad.style.transform = 'rotate(' + rand(-6, 6) + 'deg)';
+            ad.textContent = adTexts[adsMade % adTexts.length];
+            const real = document.createElement('button');
+            real.className = 'xreal'; real.type = 'button'; real.textContent = 'x';
+            real.setAttribute('aria-label', 'Close ad');
+            real.style[Math.random() < 0.5 ? 'left' : 'right'] = '2px';
+            real.style[Math.random() < 0.5 ? 'top' : 'bottom'] = '2px';
+            real.onclick = () => ad.remove();
+            const fake = document.createElement('button');
+            fake.className = 'fake'; fake.type = 'button'; fake.textContent = 'CLOSE';
+            fake.onclick = () => {
+                if (adsMade >= 10) { ad.remove(); return; }
+                spawnAd(); spawnAd();
+                toast('Ad closed. (Two more opened.)');
+            };
+            ad.appendChild(real); ad.appendChild(fake);
+            document.body.appendChild(ad);
+        }
+        setTimeout(spawnAd, 8000);
+        setInterval(() => { if (document.querySelectorAll('.ad').length < 3) spawnAd(); }, 15000);
+
+        /* ---------- Logo easter egg ---------- */
+        const logoLines = [
+            'This logo was approved by a committee of 12.',
+            'Our designer said "it is fine".',
+            'Yes, the A is upside down. It is intentional. We think.',
+            'The logo is loading. It has been loading since 1987.'
+        ];
+        let logoClicks = 0;
+        $('#logo').addEventListener('click', () => toast(logoLines[logoClicks++ % logoLines.length]));
+
+        /* ---------- Wandering fake cursor ---------- */
+        const fc = $('#fakeCursor');
+        let mx = innerWidth / 2, my = innerHeight / 2;
+        addEventListener('pointermove', e => { mx = e.clientX; my = e.clientY; });
+        (function cursorLoop(t) {
+            const ox = 45 + 35 * Math.sin(t / 1700), oy = 30 + 25 * Math.cos(t / 1300);
+            fc.style.transform = 'translate(' + (mx + ox) + 'px,' + (my + oy) + 'px)';
+            requestAnimationFrame(cursorLoop);
+        })(0);
+
+        /* ---------- Secret mercy: Esc = maintenance key ---------- */
+        addEventListener('keydown', e => {
+            if (e.key !== 'Escape' || mercy) return;
+            mercy = true;
+            credit = 500;
+            document.body.classList.add('mercy');
+            document.querySelectorAll('.ad').forEach(a => a.remove());
+            ['cookie', 'news', 'rate'].forEach(closeOverlay);
+            $('#chat').hidden = true;
+            adsMade = 99;
+            say('MAINTENANCE KEY TURNED. CREDIT ' + fmt(credit) + '. NO MORE JAMS.');
+            toast('Mercy mode. The machine feels bad.');
+        });
+
+        /* Guilt trip when you switch tabs */
+        const baseTitle = document.title;
+        document.addEventListener('visibilitychange', () => { document.title = document.hidden ? 'Come back.' : baseTitle; });
+    </script>
+</body>
+
+</html>
